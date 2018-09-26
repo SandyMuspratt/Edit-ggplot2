@@ -1,0 +1,127 @@
+\documentclass{my_presentation}  
+
+\begin{document}
+
+
+<<setup, include=FALSE>>=
+options(width=33)
+
+opts_chunk$set(fig.path='figure/beamer-', fig.align='center',
+               fig.show='hold', 
+	             comment=NA, highlight=FALSE, background='#F6EFEA', 
+	             size='small',
+               tidy=TRUE, tidy.opts=list(width.cutoff=30)
+               )
+@
+
+ 
+\title[Required packages]{Lecture 2 \\ Required packages}
+\author[S. Muspratt]{} 
+\date{}
+
+
+
+%%%%%%
+
+
+\begin{frame}
+\vspace{-0.3in}
+\titlepage
+\end{frame}
+
+
+%%%%%% Slide 2
+
+
+\begin{frame}[t, fragile]{Required packages}
+\vspace{1em}
+\textbf{ggplot2} will be used to draw the initial graphs.\\
+\textbf{gtable} will be used to assemble and disassemble tables of graphic objects\\
+\vspace{1em}
+If the packages aren't already installed, they should be installed now.\\
+\vspace{1em}
+When required, the packages can be loaded using the \texttt{library()} function.\\
+\vspace{1em}
+In the next section, the \textbf{grid} package is used. The \textbf{grid} package does not need separate installation - it is installed along with \textbf{R}. But it does need to be loaded. 
+
+\vspace{2em}
+\begin{block}{R code} 
+
+\vspace{.2em}
+\hspace*{5pt}\texttt{install.packages("ggplot2", dependencies = TRUE)}\\
+\vspace{.2em}
+\hspace*{5pt}\texttt{install.packages("gtable", dependencies = TRUE)}\\
+\vspace{1em}
+\hspace*{5pt}\texttt{library(grid)}\\
+\vspace{.2em}
+\hspace*{5pt}\texttt{library(ggplot2)}\\
+\vspace{.2em}
+\hspace*{5pt}\texttt{library(gtable)}\\
+
+
+\end{block}
+
+\end{frame}
+
+
+%%%%%% Slide 3
+
+
+\begin{frame}[t, fragile]{Required packages}
+\vspace{1em}
+
+Occassionally, the \textbf{dplyr} package will be used to manipulate data and the tables of graphic objects. \\
+\vspace{1em}
+If the package isn't already installed, it should be installed now.\\
+\vspace{1em}
+When required, the package can be loaded using the \texttt{library()} function.\\
+
+\vspace{2em}
+\begin{block}{R code} 
+
+\vspace{.2em}
+\hspace*{5pt}\texttt{install.packages("dplyr")}\\
+\vspace{.2em}
+\hspace*{5pt}\texttt{library(dplyr)}\\
+
+\end{block}
+\end{frame}
+
+
+%%%%%% Slide 4
+
+
+\begin{frame}[t, fragile]{Versions}
+\vspace{1em}
+
+
+\texttt{R} version 3.5.1 \par
+\vspace{1em}
+\texttt{ggplot2} version 3.0.0 \par
+\vspace{1em}
+\texttt{gtable} version 0.2.0 \par
+\vspace{1em}
+\texttt{grid} version 3.5.1 \par
+\vspace{1em}
+\texttt{dplyr} version 0.7.6 \par
+
+\end{frame}
+
+
+%%%%%% Slide 5
+
+
+\begin{frame}[t, fragile]{What's next?}
+\vspace{1em}
+
+The next section contains a quick introduction to \textbf{grid}. \par
+
+\vspace{1em}
+
+The questions: 'What is \textbf{grid}', and 'why \textbf{grid}', are answered in the next lecture. 
+
+
+\end{frame}
+
+
+\end{document}

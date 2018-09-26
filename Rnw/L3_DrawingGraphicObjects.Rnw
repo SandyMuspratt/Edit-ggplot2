@@ -1,0 +1,88 @@
+\documentclass{my_presentation}  
+
+\begin{document}
+
+
+<<setup, include=FALSE>>=
+options(width=33)
+
+opts_chunk$set(fig.path='figure/beamer-', fig.align='center',
+               fig.show='hold', 
+	             comment=NA, highlight=FALSE, background='#F6EFEA', 
+	             size='small',
+               tidy=TRUE, tidy.opts=list(width.cutoff=30)
+               )
+@
+
+ 
+\title[Why grid]{Lecture 3 \\ Why grid}
+\author[S. Muspratt]{} 
+\date{}
+
+
+
+%%%%%%
+
+
+\begin{frame}
+\vspace{-0.3in}
+\titlepage
+\end{frame}
+
+
+%%%%%% Slide 2
+
+
+\begin{frame}[t, fragile]{What is \textbf{grid}?}
+
+\vspace{2em}
+
+\textbf{grid}:
+\begin{enumerate}[label={}]
+\item An \textbf{R} package written by Paul Murrell,
+\item to construct 
+\item and edit plots,
+\item at specified locations,
+\item within specified regions on the graphics device.
+\end{enumerate}
+
+\vspace{2em}
+
+
+Key concepts:
+\begin{enumerate}[label={}]
+\item grob - graphical object
+\item viewport - region in the graphics device
+\end{enumerate}
+
+\end{frame}
+
+
+%%%%%% Slide 3
+
+
+\begin{frame}[t, fragile]{Why \textbf{grid}?}
+
+\vspace{2em}
+
+\begin{enumerate}[label={}]
+\item \textbf{ggplot2} is based on the \textbf{grid} graphics system.
+\item A great deal can be achieved with \textbf{ggplot} without encountering \textbf{grid},
+\item but there is a limit.
+\item With \textbf{grid}, a lot more can be achieved.
+\vspace{1em}
+\item A \textbf{ggplot} object 
+\item can be converted into a \textbf{grid} object
+\item and thus it becomes amenable to editing and manipulation by \textbf{grid}
+\item in more detail than is possible with \textbf{ggplot}.
+\vspace{1em}
+\item A little \textbf{grid} can go a long way.
+\end{enumerate}
+
+
+
+\end{frame}
+
+
+
+\end{document}
