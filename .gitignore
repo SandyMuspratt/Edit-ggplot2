@@ -1,9 +1,11 @@
 .Rproj.user
+Edit-ggplot2.Rproj
 .Rhistory
 .RData
 .Ruserdata
-.log
-.nav
-.snm
-.toc
-.vrb
+Rnw/*.log
+Rnw/*.nav
+Rnw/*.snm
+Rnw/*.toc
+Rnw/*.tex
+Rnw/*.vrb

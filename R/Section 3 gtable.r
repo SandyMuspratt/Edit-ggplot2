@@ -13,33 +13,6 @@
 ##
 ###############################################################
 
-# gtable:
-#  R package written by hadley Wickham
-#  Construct and manipulate layouts
-#  Containing grobs
-
-# grid - does this as well:
-#  Defines viewports
-#  Containing grobs
- 
-# So, why gtable?
-#  grid
-#      low-level
-#       more difficult to learn
-
-#  gtable
-#       builds on grid
-#       mid-level
-#       less difficult to learn
-#       easier to merge layouts, add columns and rows to the layout, add grobs
-#       used in ggplot
-
-# Thus gtable can be used to modify ggplot layouts
-
-# But gtable plays no role in modifying grobs.
-# Either modify the plot, or
-# use grid to modify the grobs.
-
 
 
 ###############################################################
@@ -63,7 +36,7 @@ library(grid)
 rect <- rectGrob(gp = gpar(fill = "orange"),
                   name = "gRect")
 
-polygon <- polygonGrob(x=c(0, 0.5, 1, 0.5), y=c(0.5, 1, 0.5, 0), 
+polygon <- polygonGrob(x = c(0, 0.5, 1, 0.5), y = c(0.5, 1, 0.5, 0), 
                         gp = gpar(fill = "burlywood3", lwd = 3),
                         name = "gPolygon")
 
@@ -102,31 +75,36 @@ grid.draw(gRow)
 # There are two widths because there are two columns;
 # There are two heights because there are two rows.
 
-# The null unit
-# Indicates relative widths and heights
+# The null unit:
+# Indicates relative widths and heights.
 # widths = unit(c(1,1), "null") means two equal widths.
 # widths = unit(c(1,2), "null") means the second width is twice the first width.
  
 mat <- matrix(list(rect, polygon, text, nullGrob()), nrow = 2)
-gMat <- gtable_matrix("gMat", mat, widths = unit(c(1, 1), "null"), heights = unit(c(1,1), "null"))
+gMat <- gtable_matrix("gMat", mat, 
+	                    widths = unit(c(1, 1), "null"), 
+	                    heights = unit(c(1,1), "null"))
 grid.newpage()
 grid.draw(gMat) 
 
 
 
-## An alternative 
+## Another way - gtable
 # Construct the table,
 # then add grobs to selected cells within the table.
-# gtable90 function to create the gtable
-gt <- gtable(name = "myGtable", heights = unit(c(1, 1, 1), "null"), widths = unit(c(1, 1, 1), "null"))
+# Use gtable() function to construct the gtable;
+# here, a 3 X 3 array of cells (note: three heights and three widths)
+gt <- gtable(name = "myGtable", 
+	           heights = unit(c(1, 1, 1), "null"), 
+	           widths = unit(c(1, 1, 1), "null"))
 
-gt <- gtable_add_grob(gt, text, t=1, l=1, b=1, r=1, name = text$name)
-gt <- gtable_add_grob(gt, PolygonText, t=2, l=2, b=2, r=2, name = PolygonText$name)
-gt <- gtable_add_grob(gt, myTree, t=3, l=3, b=3, r=3, name = myTree$name)
+gt <- gtable_add_grob(gt, text, t=1, l=1, name = text$name)
+gt <- gtable_add_grob(gt, PolygonText, t=2, l=2, name = PolygonText$name)
+gt <- gtable_add_grob(gt, myTree, t=3, l=3, name = myTree$name)
 grid.newpage()
 grid.draw(gt)
 
-# gtable_add_grob() function to add the grobs:
+# Use gtable_add_grob() function to add the grobs:
 #   gtable to which grob will be added;
 #   grob to be added
 #   t = top, l = left, b = bottom, and r = right indicate the cells where the grob will be added.
@@ -134,7 +112,8 @@ grid.draw(gt)
 
  
 
-## Diagram 1 What the layout looks like
+## Diagram 1 (Slide 10) What the layout looks like.
+library(grid)
 pushViewport(viewport(width = .95, h = .95))
 #grid.rect()
 pushViewport(viewport(x = .5-1/3, y = .5+1/3, w =1/3, h = 1/3))
@@ -171,8 +150,10 @@ upViewport()
 
 
 ## Variation 1
-# The grob in the middle row is to span three columns
-gt <- gtable(name = "myGtable", heights = unit(c(1, 1, 1), "null"), widths = unit(c(1, 1, 1), "null"))
+# The grob in the middle row is to span three columns.
+gt <- gtable(name = "myGtable", 
+	           heights = unit(c(1, 1, 1), "null"), 
+	           widths = unit(c(1, 1, 1), "null"))
 
 
 gt <- gtable_add_grob(gt, text, t=1, l=1, name = text$name)
@@ -185,7 +166,8 @@ grid.newpage()
 grid.draw(gt)
 
 
-## Diagram 2 - What the layout looks like
+## Diagram 2 (Slide 14) - What the layout looks like.
+library(grid)
 pushViewport(viewport(width = .95, h = .95))
 #grid.rect()
 pushViewport(viewport(x = .5-1/3, y = .5+1/3, w =1/3, h = 1/3))
@@ -217,7 +199,7 @@ upViewport()
 
 
 # Variation 2
-# The centre cell is twice the size of the others
+# The centre cell is to have twice the width and twice the height of the other cells.
 gt <- gtable(heights = unit(c(1, 2, 1), "null"), widths = unit(c(1, 2, 1), "null"))
 
 gt <- gtable_add_grob(gt, text, t=1, l=1, name = text$name)
@@ -226,7 +208,7 @@ gt <- gtable_add_grob(gt, myTree, t=3, l=3, name = polygon$name)
 grid.newpage()
 grid.draw(gt)
 
-## Diagram 3 - What the layout looks like
+## Diagram 3 (Slide 17) - What the layout looks like.
 pushViewport(viewport(width = .95, h = .95))
 pushViewport(viewport(x = .5-3/8, y = .5+3/8, w =1/4, h = 1/4))
 grid.rect(gp = gpar(fill = "grey"))
@@ -261,7 +243,7 @@ upViewport()
 upViewport()
 
 
-## By way of completeness - grid layouts
+## By way of completeness - Doing the same using grid.
 layout <- grid.layout(3, 3,
                      heights = unit(c(1, 2, 1), "null"), 
                      widths = unit(c(1, 2, 1), "null"))
@@ -313,7 +295,7 @@ library(grid)
 rect <- rectGrob(gp = gpar(fill = "orange"),
                   name = "gRect")
 
-polygon <- polygonGrob(x=c(0, 0.5, 1, 0.5), y=c(0.5, 1, 0.5, 0), 
+polygon <- polygonGrob(x = c(0, 0.5, 1, 0.5), y = c(0.5, 1, 0.5, 0), 
                         gp = gpar(fill = "burlywood3", lwd = 3),
                         name = "gPolygon")
 
@@ -356,18 +338,18 @@ str(gt)
 ## Components of the gtable
 names(gt)
 
-# grobs: A list of grobs - what type of grob, and its name
-# layout: A dataframe giving the position of each grob in the layout
-# widths: Size (number and unit) of each column of the layout
-# heights: Size (number and unit) of each row of the layout
-# respect: Parameter indicating whether dimensions are linked (fixed aspect ratio)
-# colnames: Rows can be given names
-# rownames: Columns can be given names
-# name: Name of the whole table - defaults to "layout"
-# gp: Graphics parameters, but they cannot be set via the gp slot for the gtable as a whole
+# grobs: A list of grobs - what type of grob, and its name.
+# layout: A dataframe giving the position of each grob in the layout.
+# widths: Size (number and unit) of each column of the layout.
+# heights: Size (number and unit) of each row of the layout.
+# respect: Parameter indicating whether dimensions are linked (fixed aspect ratio).
+# colnames: Rows can be given names.
+# rownames: Columns can be given names.
+# name: Name of the whole table - defaults to "layout".
+# gp: Graphics parameters, but they cannot be set via the gp slot for the gtable as a whole.
 # vp: Viewport defining location, size and orientation of the gtable - Graphics parameters for the whole table can be set here.
-# children: List of children - applies only to the grobs that have children
-# childrenOrder: Order in which children are drawn - applies only to the grobs that have children
+# children: List of children - applies only to the grobs that have children.
+# childrenOrder: Order in which children are drawn - applies only to the grobs that have children.
 
 
 ## What are the values for some of these components?
@@ -381,13 +363,13 @@ gt$grobs
 gt$layout
 
 # A dataframe.
-# name:    The names of the grobs
-# z:       The order in which the grobs are drawn
-# clip:    Whether or not the grobs are clipped to their viewports
-#          Note: the default for gtable is "on"
+# name:    The names of the grobs.
+# z:       The order in which the grobs are drawn.
+# clip:    Whether or not the grobs are clipped to their viewports.
+#          Note: the default for gtable is "on".
 # t,l,b,r: Locations of the grobs in the layout. 
-#          They should agree with t,l,b,r used to populate the gtable with grobs
-#          That is, they should agree with the values set in gtable_add_grob()
+#          They should agree with t,l,b,r used to populate the gtable with grobs.
+#          That is, they should agree with the values set in gtable_add_grob().
 
 
 gt <- gtable(name = "myGtable", 
@@ -459,14 +441,14 @@ formatVPTree(current.vpTree())
 
 
 # The main points
-# gtable_show_layout() returns a diagram of the layout of the gtable
-# str() returns the structure of the gtable: lists within lists
-# names() returns the names of the objects within the gtable 
-#    gtable$names returns the names of the grobs
-#    gtable$widths; gtable$heights returns the widths and heights of the columns and rows
-#    gtable$layout returns a dataframe of layout information
-# grid.ls(grid.force()) - a grid function for getting the names of the grobs
-# current.vpTree() - a grid function for getting the names of the viewports
+# gtable_show_layout() returns a diagram of the layout of the gtable.
+# str() returns the structure of the gtable: lists within lists.
+# names() returns the names of the objects within the gtable.
+#    gtable$names returns the names of the grobs.
+#    gtable$widths; gtable$heights returns the widths and heights of the columns and rows.
+#    gtable$layout returns a dataframe of layout information.
+# grid.ls(grid.force()) - a grid function for getting the names of the grobs.
+# current.vpTree() - a grid function for getting the names of the viewports.
 
 
 
@@ -488,10 +470,10 @@ formatVPTree(current.vpTree())
 
 
 #  This lecture: Changing width, height and layout parameters 
-#  to change the shape and layout of a given gtable 
+#  to change the shape and layout of a given gtable. 
 
 # Lecture 12: Use gtable functions to add to or substract from a gtable.
-# Lecture 13: Editing the grobs
+# Lecture 13: Editing the grobs.
 
 # Set up a gtable
 library(gtable)
@@ -500,7 +482,7 @@ library(grid)
 rect <- rectGrob(gp = gpar(fill = "orange"),
                   name = "gRect")
 
-polygon <- polygonGrob(x=c(0, 0.5, 1, 0.5), y=c(0.5, 1, 0.5, 0), 
+polygon <- polygonGrob(x = c(0, 0.5, 1, 0.5), y = c(0.5, 1, 0.5, 0), 
                         gp = gpar(fill = "burlywood3", lwd = 3),
                         name = "gPolygon")
 
@@ -526,6 +508,7 @@ grid.draw(gt)
 # Recall the objects:
 #   widths and heights
 #   layout
+#
 # In Lecture 10, I re-drew a gtable.
 # That is not always possible.
 # Here, I edit the gtable by adjusting:
@@ -534,8 +517,8 @@ grid.draw(gt)
 
 
 # Consider these edits:
-#   The middle cell, the cell that contains gPolygonText, to be twice the size of its surrounding cells;
-#   The content of the middle cell, gPolygonText to extend across all three cells;
+#   The middle cell, the cell that contains gPolygonText, is to have twice the height and twice the width of its surrounding cells;
+#   The content of the middle cell, gPolygonText to extend across all three columns;
 #   The content of the middle cell, gPolygonText to fill the whole table;
 #   Swap the positions of gText and gMyTree.
 
@@ -559,8 +542,8 @@ grid.draw(gt1)
 gt2 <- gt    # So I keep the original
 gt2$layout
 
-gt2$layout[2,2] <- 1
-gt2$layout[2,4] <- 3
+gt2$layout[2, 2] <- 1
+gt2$layout[2, 4] <- 3
 gt2$layout
 
 grid.newpage()
@@ -576,7 +559,7 @@ gt2$layout
 
 gt2$layout$name == "gPolygonText"
 
-gt2$layout[gt2$layout$name == "gPolygonText", c("l","r") ] <- c(1, 3)
+gt2$layout[gt2$layout$name == "gPolygonText", c("l", "r") ] <- c(1, 3)
 gt2$layout
 
 grid.newpage()
@@ -585,36 +568,36 @@ grid.draw(gt2)
 
 # 2nd alternative EDIT 2:
 # gt$layout is a data frame - subset to select the rows and columns,
-# I use regular expression to select the row
-gt3 <- gt    # So I keep the original
-gt3$layout
+# I use regular expression to select the row.
+gt2 <- gt    # So I keep the original
+gt2$layout
 
 row <- grepl("Poly", gt2$layout$name)
 
-gt3$layout[row, c("l", "r")] <- c(1, 3)
-gt3$layout
+gt2$layout[row, c("l", "r")] <- c(1, 3)
+gt2$layout
 
 grid.newpage()
-grid.draw(gt3)
+grid.draw(gt2)
 
 
 
 ## Another EDIT 2: Change the order of printing
 # gt$layout is a data frame - subset to select the rows and columns.
-# I use regular expression to select the row
+# I use regular expression to select the row.
 gt3 = gt    # So I keep the original
 gt3$layout
 
 row = grepl("Tree", gt3$layout$name)
 
-gt3$layout[row, c("t", "l")] = c(1,1)
+gt3$layout[row, c("t", "l")] <- c(1, 1)
 gt3$layout
 
 grid.newpage()
 grid.draw(gt3)
 
 # Consider column z in the layout. 
-gt3$layout[3, "z"] = 0
+gt3$layout[3, "z"] <- 0
 grid.newpage()
 grid.draw(gt3)
 
@@ -628,8 +611,8 @@ gt4 = gt    # So that I keep the original
 gt4$layout
 
 
-gt4$layout[grepl("gText", gt4$layout$name), c("t", "l", "b", "r")] = 3
-gt4$layout[grepl("Tree", gt4$layout$name), c("t", "l", "b", "r")] = 1
+gt4$layout[grepl("gText", gt4$layout$name), c("t", "l", "b", "r")] <- 3
+gt4$layout[grepl("Tree", gt4$layout$name), c("t", "l", "b", "r")] <- 1
 gt4$layout
 
 grid.newpage()
@@ -638,10 +621,11 @@ grid.draw(gt4)
 
 ## The main points
 # Adjust values and units in \texttt{widths} and \texttt{heights} to change the size of cells.
-# Adjust values for t, l, b, r in the layout data frame to change the extend of a particular grob. 
+# Adjust values for t, l, b, r in the layout data frame to change the extent of a particular grob. 
+# Adjust values for t, l, b, r in the layout data frame to change the position of a particular grob. 
 # Adjust value for z in the layout data frame to change the order in which grobs are drawn. 
 # Select the relevant rows and columns of the layout data frame using index notation.  
-
+# Select the relevant rows and columns of the layout data frame using names and/or regular expressions.
 
 
 
@@ -650,11 +634,15 @@ grid.draw(gt4)
 ##
 ## Lecture 12: Adding to and subtracting from the gtable
 ##
+## Adding rows and columns to a gtable
+## Combining gtables
+## Extracting grobs from a gtable, 
+## and putting them somewhere else in the gtable
 ##
 ###############################################################
 
 # Modifying the table
-# Editing function in gtable
+# Editing function in gtable:
 
 #   gtable_add_rows, gtable_add_cols: add rows and columns to the gtable
 #   cbind, rbind - combine gtables
@@ -696,27 +684,27 @@ grid.draw(gt)
 
 
 
-# Adding rows and columns to the gtable
+## Adding rows and columns to the gtable
 
-# Use the gtable_add_rows() function
-# Or the gtable_add_cols() function
+# Use the gtable_add_rows() function,
+# or the gtable_add_cols() function.
 
 # Parameters are:
-#    The gtable to be modified
-#    The height of the row (or the width of the column)
-#    Position in the table where the new row (or column) is to be added
+#    The gtable to be modified;
+#    The height of the row (or the width of the column);
+#    Position in the table where the new row (or column) is to be added.
 
 # The height is a unit vector - as before. 
 # So far, I used the null unit.
 # All grid units are available:
-#   absolute units such as: in, cm, mm, point
-#   relative units such as: null, npc, native
-#   units that adjust to the size of a grob, such as: grobwidth, strwidth, lines
+#   absolute units such as: in, cm, mm, point;
+#   relative units such as: null, npc, native;
+#   units that adjust to the size of a grob, such as: grobwidth, strwidth, lines.
 
-# Position is a number - the numbers you see in gtable_show_layout
+# Position is a number - the numbers you see in gtable_show_layout.
 # The new row (or column) is added below (or to the right of) the position number.
-# Exceptions: pos=0    new row added to the top (or the far left)
-#             pos=-1   new row added to the bottom (or the far right)
+# Exceptions: pos=0    new row added to the top (or the far left).
+#             pos=-1   new row added to the bottom (or the far right).
 
 
 gt1 <- gtable_add_rows(gt, unit(3, "lines"), 0)
@@ -758,24 +746,26 @@ grid.draw(gt2)
 # The height of a "line" is determined by fontsize and cex already in place in the table.
 # I want the new row's height to adjust its height according to fontsize of the Title grob.
 
-# A title, but the row it goes into adjusts to its height.
-Title <-  textGrob("Some grobs in a gtable", 
-               gp=gpar(fontface = "bold", fontsize = 18))
+# A title, but the row it goes into adjusts to the title's height.
+Title <- textGrob("Some grobs in a gtable", 
+               gp = gpar(fontface = "bold", fontsize = 18))
 
 convertHeight(grobHeight(Title), "cm")
 
-Title <-  textGrob("Some grobs in a gtable", 
-               gp=gpar(fontface = "bold", fontsize = 40))
+Title <- textGrob("Some grobs in a gtable", 
+               gp = gpar(fontface = "bold", fontsize = 40))
 
 convertHeight(grobHeight(Title), "cm")
+
+
 
 
 # A little extra space for the Title grob
 padding <- unit(1, "lines")
 
 # Create the grob to be added to the new row
-Title <-  textGrob("Some grobs in a gtable", 
-               gp=gpar(fontface = "bold", fontsize = 18))
+Title <- textGrob("Some grobs in a gtable", 
+               gp = gpar(fontface = "bold", fontsize = 18))
 
 # Add a new row to the gtable
 gt1 <- gtable_add_rows(gt, 
@@ -791,11 +781,11 @@ grid.draw(gt2)
 
 
 
-# A title that is itself a combinations of grobs - a rectangle and text.
+## A title that is itself a combinations of grobs - a rectangle and text.
 
 # Create the separate grobs to be added to the new row
 TitleText <- textGrob("Some grobs in a gtable", 
-            gp=gpar(fontface = "bold", fontsize = 18))
+            gp = gpar(fontface = "bold", fontsize = 18))
 TitleRect <- rectGrob(gp = gpar(fill = "skyblue"))
 
 # Combine the two
@@ -822,7 +812,7 @@ grid.draw(gt2)
 # or, use the gtable's height parameter to set the required height.
 # Which height needs adjusting?
 gt2$heights
-# The first height
+# The first height.
 gt2$heights[1] <- grobHeight(TitleText) + 2*padding
 grid.newpage()
 grid.draw(gt2)
@@ -831,8 +821,8 @@ grid.draw(gt2)
 
 
 ## Extra for experts
-# The title was centred within the blue rectangle
-# Another approach to title - the ggplot2 approach
+# The title was centred within the blue rectangle.
+# Another approach to title - the ggplot2 approach.
 # Titles appear often in ggplot: plot titles, axis titles, tick mark labels, strip labels.
 # In ggplot, titles have margins.
 # And of course, the margins can differ.
@@ -840,9 +830,9 @@ grid.draw(gt2)
 # The text is set up as before
 text_grob <- textGrob("Some grobs in a gtable", gp = gpar(fontface = "bold", fontsize = 18))
  
-# There are three heights: two margins, and the height of the text.
+# There are three heights: upper and lower margins, and the height of the text.
 # The upper margin is "1 lines", the lower margin is "2 lines".
-# The three heights are combined - concatenated - in the sense of the c() function.
+# The three heights are combined - concatenated - in the sense of the c() function;
 # but it's the unit.c() function that concatenates units.
 heights <- unit.c(unit(1, "lines"), unit(1, "grobheight", text_grob), unit(2, "lines"))
 
@@ -871,7 +861,7 @@ child_vp <- viewport(layout.pos.row = 2,    # select 2nd row
 # One child grob (in gList); one child viewport (in vpList);
 # thus the child grob is drawn in the child viewport.
 # Also, the heights of the three viewports are set here. 
-#(For this drawing, it's not necessary to set the heights here in the gTree function.
+# (For this drawing, it's not necessary to set the heights here in the gTree function.
 # But ggplot does, and thus there are two places where the heights are set.) 
 
 TitleText <- gTree(children = gList(text_grob),
@@ -888,11 +878,11 @@ gt1 <- gtable_add_rows(gt,
                heights = sum(heights), 0)
 
 # Add the new Title grob to the new row
-gt2 <- gtable_add_grob(gt1, Title, 
+gt1 <- gtable_add_grob(gt1, Title, 
                t = 1, l = 1, r = 3, name = "gTitle")
 
 grid.newpage()
-grid.draw(gt2)
+grid.draw(gt1)
 
 
 
@@ -912,9 +902,9 @@ grid.draw(gt2)
 # Use the gt gtable constructed earlier.
 # Set up a second version that has different widths
 gt1 <- gt
-gt1$widths <- unit(c(1,3,1), c("inches", "inches", "null"))
+gt1$widths <- unit(c(1, 3, 1), c("inches", "inches", "null"))
 gt2 <- gt
-gt2$widths <- unit(c(3,1,1), c("inches", "inches", "null"))
+gt2$widths <- unit(c(3, 1, 1), c("inches", "inches", "null"))
 # Check the widths for the two tables
 gt1$widths
 gt2$widths
@@ -941,14 +931,14 @@ grid.newpage()
 grid.draw(gtMax)
 
 
-# Set clipping - a layout column I didn't use before when considering layout
+## Set clipping - I haven't yet considered the 'clip' column in the layout data frame.
 # Notice that the text no longer fits into the viewport set up for gPolygonText.
 gtLast$layout
-# That's because clip is set to "on"
+# That's because clip is set to "on".
 # That is, any part of the grob that overflows the viewport is clipped.
 # Turn clipping off, and we should see all the text.
 # That is, allow the text to extend beyond the boundaries of the viewport.
-gtLast$layout$clip = "off"
+gtLast$layout$clip <- "off"
 grid.newpage()
 grid.draw(gtLast)
 
@@ -956,11 +946,11 @@ grid.draw(gtLast)
 
 
 
-#   Extract the content of a cell using gtable_filter
+##   Extract the content of a cell using gtable_filter.
 # Why would I want to extract a grob?
 # To move it somewhere else.
-# To edit the grob then put it back into the gtable
-# But I deal with editing of grobs in the next lecture
+# To edit the grob then put it back into the gtable.
+# But I deal with editing of grobs in the next lecture.
 
 # Using the gt gtable constructed before
 MiddleGrob <- gtable_filter(gt, "gPolygonText")
@@ -979,40 +969,46 @@ grid.draw(gtNew)
 gtNew$layout
 
 
+# But I could have given them names
+gtNew <- gtable_add_grob(gt, rep(list(MiddleGrob), 2), t = 2, l = c(1, 3),
+            name = paste0("gPolygonText", c(1, 3)))
+gtNew$layout
+
+
 
 # Alternatively, I can select a cell and its contents using indexing.
 # It works, but for complex gtables, it is better to use the grobs names
-MiddleGrob = gt[2,2]
+MiddleGrob <- gt[2,2]
 grid.newpage()
 grid.draw(MiddleGrob)
 
 
-# Another alternative: select the grob from the list of grobs
+# Another alternative: select the grob from the list of grobs.
 # Again it works, but for complex tables, 
 # it can be difficult finding the grob.
 gt$grobs
 # I want the second grob
-MiddleGrob = gt$grobs[[2]]
+MiddleGrob <- gt$grobs[[2]]
 grid.newpage()
 grid.draw(MiddleGrob)
 
 
-# Drop cells from a table using indexing
+
+## Drop cells from a table using indexing
 # For instance, drop the middle column from gtNew
-gtNew1 = gtNew[, -2]
+gtNew1 <- gtNew[, -2]
 grid.newpage()
 grid.draw(gtNew1)
 
 
-# Suppose I want to delete the grob but not the cell.
-# I need to drop the grob from the list of grobs
-# AND I need to drop the appropriate row from the layout
-# And to do this using the grob's name
+# Suppose I want to delete the grob but not the cells.
+# I need to drop the grob from the list of grobs,
+# AND I need to drop the appropriate row from the layout,
 
 gtNew$grobs
 gtNew$layout
 
-gtNew2 = gtNew
+gtNew2 <- gtNew
 gtNew2$grobs <- gtNew2$grobs[-2]
 gtNew2$layout <- gtNew2$layout[-2, ]
 
@@ -1021,31 +1017,12 @@ grid.draw(gtNew2)
 
 
 # Using grep to select the position of the grob:
-# 2nd in the list of grobs, 2nd in the layout data frame
-# grep returns a vector of indices
-gtNew3 = gtNew
-
-pos <- grep(pattern = "Poly", gtNew3$layout$name)
-pos
-
-gtNew3$grobs <- gtNew3$grobs[-pos]
-gtNew3$layout <- gtNew3$layout[-pos, ]
-
-gtNew3$grobs
-gtNew3$layout
-
-grid.newpage()
-grid.draw(gtNew3)
-
-
-# Using grepl to select the position of the grob:
-# 2nd in the list of grobs, 2nd in the layout data frame
-# grepl returns a logical vector 
+# 2nd in the list of grobs, 2nd in the layout data frame;
+# grep returns a vector of indices.
 gtNew3 <- gtNew
 
-pos <- grepl(pattern = "Poly", gtNew3$layout$name)
+pos <- gtNew3$layout$name == "gPolygonText"
 pos
-!pos
 
 gtNew3$grobs <- gtNew3$grobs[!pos]
 gtNew3$layout <- gtNew3$layout[!pos, ]
@@ -1058,15 +1035,15 @@ grid.draw(gtNew3)
 
 
 
-# But, to delete a grob but not the cell,
-# it's probably easier to replace a grob with the nullGrob()
+# But, to delete a grob but not the cells,
+# it's probably easier to replace a grob with the nullGrob().
  
 gtNew4 <- gtNew
 
-pos <- grep(pattern = "Poly", gtNew4$layout$name)
+pos <- gtNew4$layout$name == "gPolygonText"
 pos
 
-gtNew4$grobs[[pos]] <- nullGrob()
+gtNew4$grobs[[which(pos)]] <- nullGrob()
 
 gtNew4$grobs
 gtNew4$layout
@@ -1078,7 +1055,7 @@ grid.draw(gtNew4)
 
 gtNew4 <- gtNew
 
-pos <- grepl(pattern = "Poly", gtNew4$layout$name)
+pos <- gtNew4$layout$name == "gPolygonText"
 pos
 
 gtNew4$grobs[pos] <- list(nullGrob())
@@ -1093,16 +1070,23 @@ grid.draw(gtNew4)
 
 
 ###############################################################
+##
 ## Lecture 13: Editing the grobs that populate a gtable
+##
+##  Editing using grid functions
+##  Editing the slot within a gtable
+##  Exracting the grob first, then editing
+##  Push to a viewport then editing
+##
 ###############################################################
 
 # Grobs
 # Some with hierarchical structures
 # within a gtable
 
-# Method 1. Extract the grob, edit it, then put it back
-# Method 2. Edit within the gtable
-# Method 3. Edit using grid edit functions (using lessons learned in Lecture 6
+# Method 1. Edit using grid edit functions (using lessons learned in Lecture 7)
+# Method 2. Edit the slot within the gtable
+# Method 3. Extract the grob, edit it, then put it back
 # Method 4. Push to the viewport that contains the grob, then edit
 
 # First, create the gtable
@@ -1112,7 +1096,7 @@ library(grid)
 rect <- rectGrob(gp = gpar(fill = "orange"),
                   name = "gRect")
 
-polygon <- polygonGrob(x=c(0, 0.5, 1, 0.5), y=c(0.5, 1, 0.5, 0), 
+polygon <- polygonGrob(x = c(0, 0.5, 1, 0.5), y = c(0.5, 1, 0.5, 0), 
                         gp = gpar(fill = "burlywood3", lwd = 3),
                         name = "gPolygon")
 
@@ -1135,7 +1119,195 @@ grid.draw(gt)
 
 
 
-# Method 1. Extract the grob, edit it, then put it back
+
+## Remember from Lecture 10:
+# grid.ls() shows the list of grobs,
+# but grid.ls() sees only one grob in a gtable.
+# Apply grid.force() first, then the grobs are visible to grid.ls()
+
+
+## Also, recall from Lecture 4:
+# There two versions of the commands for obtaining grobs:
+#   *Grob     - Creates a graphic object but does not produce output
+#    grid.*   - Creates a graphic object and produces output
+
+# Same goes for the editing function:
+#    editGrob   - Edits the object but does not produce output 
+#    grid.edit  - Edits the object and outputs the result
+
+# That is, 
+# I can edit on-screen, using grid.edit
+
+# Or, I can edit off-screen, using editGrob. 
+
+
+
+### Method 1. Edit using grid edit functions (using lessons learned in Lecture 7)
+
+# It treats the gtable as if it is a grid object, 
+# with grobs arranged in hierarchical structures. 
+# I need to be able to name the relevant grob; 
+# and I need the grobs to be visible to the editing function.
+
+## First, some on-screen editing.
+
+gt1 <- gt
+grid.newpage()
+grid.draw(gt1)
+
+# Editing the grobs within the gtable
+grid.ls(grid.force())
+
+grid.edit("gPolygonText.2-2-2-2", gp = gpar(col = "red"))
+
+
+
+## Tedious and prone to error having to type full name
+
+grid.newpage(); grid.draw(gt1)
+grid.force()
+grid.edit("gPolygonText", grep = TRUE, gp = gpar(col = "red"))
+
+
+
+## There are two polygonTexts in the gtable.
+# Suppose I want the colour for both to be set to "red"
+
+grid.newpage(); grid.draw(gt1)
+grid.force()
+grid.edit("gPolygonText", grep = TRUE, global = TRUE, gp = gpar(col = "red"))
+
+
+## grid.gedit function - g for global and g for grep
+
+grid.newpage(); grid.draw(gt1)
+grid.force()
+grid.gedit("gPolygonText", gp = gpar(col = "red"))
+
+
+## But what if I want the second PolygonText to be coloured "red".
+# I need to provide a path to the relevant grob
+
+grid.newpage(); grid.draw(gt1)
+grid.force()
+grid.edit("gMyTree.1-1-1-1::gPolygonText", gp = gpar(col = "red"))
+
+
+## grid.gedit works with the path.
+# and the path can be generated in the gPath() function
+grid.newpage(); grid.draw(gt1)
+grid.force()
+grid.gedit(gPath("gMyTree", "Poly"), gp = gpar(col = "red"))
+
+
+## Now change the line width
+grid.gedit(gPath("gMyTree", "Poly"), gp = gpar(lwd = 20))
+
+# The command has no effect because the change to the gp slot is applied to gPolygonText
+# But when I set up gPolygonText, 
+# line width was applied to one of its children, to gPolygon.
+# Remember the rule: A graphic parameter applied to a parent 
+# would normally flow through to the children 
+# except for the children that already have that parameter set.
+# I need to get to the gPloygon grob to change the line width.
+# The path begins with gMyTree, 
+# then proceeds to gPolygonText, 
+# on its way to gPolygon.
+# In the code below, grid.gedit means partial names will work:
+#    The first "Poly" stands for "gPolygonText", 
+#    The second "Poly" stands for "gPolygon".
+# These are the names of the child or grand child of "gMyTree", at the head of the tree
+
+grid.gedit(gPath("gMyTree", "Poly", "Poly"), gp = gpar(lwd = 20))
+
+
+
+
+
+# All this so far is editing on-screen.
+# What about editing off-screen
+# Because we're dealing with a gtable, 
+# the grobs in the gtable are invisible to editing functions. 
+# Apply grid.force().
+
+gt1 <- gt
+grid.ls(grid.force(gt1))  # list of grobs
+
+# Apply the two edits:
+#    In gMyTree, change colour of text and line to red
+#    and increase line width to 40
+
+gt1 <- editGrob(grid.force(gt1), gPath("gMyTree", "Poly"), grep = TRUE, 
+         gp = gpar(col = "red"))
+
+gt1 <- editGrob(grid.force(gt1), gPath("gMyTree", "Poly", "Poly"), grep = TRUE, 
+         gp = gpar(lwd = 20))
+
+grid.newpage(); grid.draw(gt1)
+
+
+
+### Method 2. Edit a slot within the gtable
+
+grid.newpage()
+grid.draw(gt)
+
+# I want to set the colour of the text in PolygonText to white.
+# Within the gt gtable there is a gp slot for the text child of the PolygonText grob.
+# Can it be found?
+# It can found. But if the gtable is complex, 
+# it will be tedious finding the path to the relevant slot - 
+# as shown in what follows.
+
+gt2 <- gt 
+
+# The gp slot will be in the grobs
+gt2$grobs
+
+# The PolygonText grob is the second grob
+gt2$grobs[[2]]
+
+# I need to see the structure
+str(gt2$grobs[[2]])
+# gText is in the children
+gt2$grobs[[2]]$children
+
+# Two children. gText is the required child
+gt2$grobs[[2]]$children$gText
+
+# I need to see the structure
+str(gt2$grobs[[2]]$children$gText)
+
+# I set colour in the gp slot. I need to gp slot
+gt2$grobs[[2]]$children$gText$gp
+
+# cex is already set. I need to set col to "white"
+gt2$grobs[[2]]$children$gText$gp$col <- "white"
+
+# Draw the modified gtable
+grid.newpage()
+grid.draw(gt2)
+
+
+### An aside:
+# Why go all the way to the gp slot of gText?
+# Why not change colour at the gp slot for gPolygonText?
+# Because that would change not only the colour of the text,
+# but also the colour of the ploygon's boundary.
+# Remember: gpar parameters flow down to all children 
+# (provided the child does not already have that parameter set). 
+gt2 <- gt 
+gt2$grobs[[2]]$gp = gpar(col = "white")
+
+grid.newpage()
+grid.draw(gt2)
+
+
+
+
+
+
+# Method 3. Extract the grob, edit it, then put it back
 # Do some editing on PolygonText grob
 # Change the font colour to white
 
@@ -1160,10 +1332,7 @@ is.gtable(Grob1); is.gtable(Grob2); is.gtable(Grob3)
 ## In the discussion to follow, Grob3 behaves in the same way as Grob1. So, only
 ## Grob1 and Grob2 are considered in the Lecture 13. But I will include Grob3 here.
 
-# Remember from Lecture 10:
-# grid.ls() shows the list of grobs,
-# but grid.ls() sees only one grob in a gtable.
-# Apply grid.force() first, then the grobs are visible to grid.ls()
+# Don't forget to apply grid.force() so that the grobs are visible to grid.ls()
 grid.newpage()
 grid.draw(Grob1)
 grid.ls(grid.force())
@@ -1186,16 +1355,6 @@ grid.ls(grid.force(Grob3))
 grid.ls(Grob2)
 
 
-# Also recall:
-# Earlier, I said there two versions for obtaining grobs:
-#   *Grob     - Creates a graphic object but does not produce output
-#    grid.*   - Creates a graphic object and produces output
-
-# Same goes for the editing function:
-#    editGrob   - Edits the object but does not produce output
-#    grid.edit  - Edits the object and outputs the result
-
-
 # So, take care when editing grobs.
 # If the grob is a gtable,
 # apply grid.force first.
@@ -1203,6 +1362,7 @@ grid.ls(Grob2)
 # If the grob is a pure grid grob,
 # There is no need to apply grid.force
 # but no harm if grid.force is applied
+
 
 
 ### Start again Method 1.
@@ -1220,11 +1380,11 @@ grid.newpage()
 grid.draw(EGrob3)
 
 ## Getting the edited grob back into the original gtable
-gt1 <- gt
-pos <- grep(pattern = "gPolygonText", gt1$layout$name)
-gt1$grobs[[pos]] = EGrob3
+gt3 <- gt
+pos <- grep(pattern = "gPolygonText", gt3$layout$name)
+gt3$grobs[[pos]] = EGrob3
 grid.newpage()
-grid.draw(gt1)
+grid.draw(gt3)
 
 
 ## Edit on-screen: grid.edit()
@@ -1248,181 +1408,14 @@ grid.edit("gText", gp = gpar(col = "white"))
 
 
 # Putting the edited grob back into the original gtable
-EGrob3 = grid.grab()
-gt2 <- gt
-pos <- grep(pattern = "gPolygonText", gt2$layout$name)
-gt2$grobs[[pos]] = EGrob3
+EGrob3 <- grid.grab()
+gt3 <- gt
+pos <- grep(pattern = "gPolygonText", gt3$layout$name)
+gt3$grobs[[pos]] = EGrob3
 grid.newpage()
-grid.draw(gt2)
+grid.draw(gt3)
 
 
-
-# Method 2. Edit within the gtable
-
-grid.newpage()
-grid.draw(gt)
-
-# I want to set the colour of the text in PolygonText to white
-# Within the gt gtable there is a gp slot for the text child of the PolygonText grob.
-# Can it be found?
-# It can found. But if the gtable is complex, 
-# it will be tedious finding the path to the relevant slot - 
-# as shown in what follows.
-
-gt4 <- gt 
-
-# The gp slot will be in the grobs
-gt4$grobs
-
-# The PolygonText grob is the second grob
-gt4$grobs[[2]]
-
-# I need to see the structure
-str(gt4$grobs[[2]])
-# gText is in the children
-gt4$grobs[[2]]$children
-
-# Two children. gText is the required child
-gt4$grobs[[2]]$children$gText
-
-# I need to see the structure
-str(gt4$grobs[[2]]$children$gText)
-
-# I set colour in the gp slot. I need to gp slot
-gt4$grobs[[2]]$children$gText$gp
-
-# cex is already set. I need to set col to "white"
-gt4$grobs[[2]]$children$gText$gp$col <- "white"
-
-# Draw the modified gtable
-grid.newpage()
-grid.draw(gt4)
-
-
-### An aside:
-# Why go all the way to the gp slot of gText?
-# Why not change colour at the gp slot for gPolygonText?
-# Because that would change not only the colour of the text,
-# but also the colour of the ploygon's boundary.
-# Remember: gpar parameters flow down to all children 
-# (provided the child does not already have that parameter set). 
-gt4 <- gt 
-gt4$grobs[[2]]$gp = gpar(col = "white")
-
-grid.newpage()
-grid.draw(gt4)
-
-
-
-
-
-# Method 3. Edit using grid edit functions (using lessons learned in Lecture 6
-# Method 3, like Method 2, edits without first having to extract the grob.
-# It treats the gtable as if it is a grid object, 
-# with grobs arranged in hierarchical structures. 
-# I need to be able to name the relevant grob; 
-# and thus I need the grobs to be visible to the editing function.
-# I can edit on-screen, using \texttt{grid.edit().} 
-
-# Or, I can edit off-screen, using \texttt{editGrob()}, 
-# but first I would need to make the gtable grobs visible to the editing function. 
-
-# First, some on-screen editing.
-
-gt5 = gt
-grid.newpage()
-grid.draw(gt5)
-
-# Editing the grobs within the gtable
-grid.ls(grid.force())
-
-grid.edit("gPolygonText.2-2-2-2", gp = gpar(col = "red"))
-
-
-# Tedious and prone to error having to type full name
-
-grid.newpage(); grid.draw(gt5)
-grid.force()
-grid.edit("gPolygonText", grep = TRUE, gp = gpar(col = "red"))
-
-
-# There are two polygonTexts in the gtable.
-# Suppose I want the colour for both to be set to "red"
-
-grid.newpage(); grid.draw(gt5)
-grid.force()
-grid.edit("gPolygonText", grep = TRUE, global = TRUE, gp = gpar(col = "red"))
-
-
-# grid.gedit function - g for global and g for grep
-
-grid.newpage(); grid.draw(gt5)
-grid.force()
-grid.gedit("gPolygonText", gp = gpar(col = "red"))
-
-
-# But what if I want the second PolygonText to be coloured "red".
-# I need to provide a path to the relevant grob
-
-grid.newpage(); grid.draw(gt5)
-grid.force()
-grid.edit("gMyTree.1-1-1-1::gPolygonText", gp=gpar(col = "red"))
-
-
-# grid.gedit works with the path.
-# and the path can be generated in the gPath() function
-gt5 = gt
-grid.newpage(); grid.draw(gt5)
-grid.force()
-grid.gedit(gPath("gMyTree", "Poly"), gp=gpar(col = "red"))
-
-
-# Now change the line width
-grid.gedit(gPath("gMyTree", "Poly"), gp=gpar(lwd = 20))
-
-# The command has no effect because the change to the gp slot is applied to gPolygonText
-# But when I set up gPolygonText, 
-# line width was applied to one of its children, to gPolygon.
-# Remember the rule: A graphic parameter applied to a parent 
-# would normally flow through to the children 
-# except for the children that already have that parameter set.
-# I need to get to the gPloygon grob to change the line width.
-# The path begins with gMyTree, 
-# then proceeds to gPolygonText, 
-# on its way to gPolygon.
-# In the code below, grid.gedit means partial names will work:
-#    The first "Poly" stands for "gPolygonText", 
-#    The second "Poly" stands for "gPolygon".
-# These are the names of the child or grand child of "gMyTree", at the head of the tree
-
-grid.gedit(gPath("gMyTree", "Poly", "Poly"), gp=gpar(lwd = 20))
-
-
-
-
-
-# All this so far is editing on-screen.
-# What about editing off-screen
-# Because we're dealing with a gtable, 
-# the grobs in the gtable are invisible to editing functions. 
-# Apply grid.force().
-
-# One option is to use the grid.grab() functionA
-gt5 <- gt
-grid.ls(grid.force(gt5))  # list of grobs
-
-# Apply the two edits:
-#    In gMyTree, change colour of text and line to red
-#    and increase line width to 40
-gt5 <- gt
-
-gt5 <- editGrob(grid.force(gt5), gPath("gMyTree", "Poly"), grep = TRUE, 
-         gp=gpar(col = "red"))
-
-gt5 <- editGrob(grid.force(gt5), gPath("gMyTree", "Poly", "Poly"), grep = TRUE, 
-         gp=gpar(lwd = 20))
-
-grid.newpage(); grid.draw(gt5)
 
 
 
@@ -1430,9 +1423,9 @@ grid.newpage(); grid.draw(gt5)
 # Method 4. Push to the viewport, then add grobs to the viewport
 # It's not editing a grob
 # It adds grobs to a viewport
-gt6 <- gt
+gt4 <- gt
 grid.newpage()
-grid.draw(gt6)
+grid.draw(gt4)
 
 # Get the names of the viewports.
 # Recall: The format function makes the list a little easier to read
@@ -1449,10 +1442,10 @@ upViewport(0)
 
 
 
-Tree = as.character(current.vpTree())
-text = "tree"
-pattern = paste0("^.*\\[(.*", text, ".*?)\\].*$")
-Tree = gsub(pattern, "\\1", Tree, ignore.case = TRUE)
+Tree <- as.character(current.vpTree())
+text <- "tree"
+pattern <- paste0("^.*\\[(.*", text, ".*?)\\].*$")
+Tree <- gsub(pattern, "\\1", Tree, ignore.case = TRUE)
 downViewport(Tree)
 
 grid.rect(width = 0.7, height = 0.2, gp = gpar(fill = "red"))
@@ -1462,133 +1455,41 @@ upViewport(0)
 
 
 
-# Revisiting Method 1:
+# Revisiting Method 3:
 # Use gtable_add_grob to put the edited grob back into the gtable.
 # A lot of the time it doesn't matter that the original remains.
 # But sometimes, it does.
 # If the edited version does not exactly overlap the original, 
 # then the original can show through.
-gt7 <- gt
-pos <- grep(pattern = "Poly", gt7$layout$name)
-Grob <- gt7$grobs[[pos]]
+gt5 <- gt
+pos <- grep(pattern = "Poly", gt5$layout$name)
+Grob <- gt5$grobs[[pos]]
 Grob <- editGrob(Grob, vp = viewport(angle = 30))
-gt7 <- gtable_add_grob(gt7, Grob, t = 2, l = 2)
+gt5 <- gtable_add_grob(gt5, Grob, t = 2, l = 2)
 
 grid.newpage()
-grid.draw(gt7)
+grid.draw(gt5)
 
 
 
 # If it matters that the original shows through,
 # remove the original.
-gt7 <- gt
-pos <- grep(pattern = "Poly", gt7$layout$name)
+gt5 <- gt
+pos <- grep(pattern = "Poly", gt5$layout$name)
 
-Grob = gt7$grobs[[pos]]
-Grob = editGrob(Grob, vp = viewport(angle = 30))
+Grob <- gt5$grobs[[pos]]
+Grob <- editGrob(Grob, vp = viewport(angle = 30))
 
-gt7$grobs[[pos]] <- nullGrob()
+gt5$grobs[[pos]] <- nullGrob()
 
-gt7 <- gtable_add_grob(gt7, Grob, t = 2, l=2)
+gt5 <- gtable_add_grob(gt5, Grob, t = 2, l = 2)
 grid.newpage()
-grid.draw(gt7)
+grid.draw(gt5)
 
 
 
 
-## Finished Section 3
-
-
-
-
-
-#####################################################
-#####################################################
-
-str(gtCols)
-gtCols$layout
-gtable_show_layout(gtCols)
-
-x <- gtCols$layout$t[grepl("Rect", gtCols$layout$name)]
-
-gtCols$heights[x] <- unit(.25,"null")
-
-
-y = gtable_filter(gtCols, pattern = "Rect", fixed = TRUE)
-y = editGrob(y, gp = gpar(fill = "red"))
-gtCols = gtable_add_grob(gtCols, z, 1, 3)
-
-
-gtCols <- gtable_grob_remove(gtCols, what = "gRect")
-
-gtCols = gtable_add_grob(gtCols, z, 2, 2)
-grid.draw(gtCols)
-
-
-
-# Or Replace grob with null grob
-gtCols = gtable(heights = unit(c(1, 1, 1), "null"), widths = unit(c(.5, 1, .5), "null"))
-
-gtCols = gtable_add_grob(gtCols, child, 1, 1, name = child$name)
-gtCols = gtable_add_grob(gtCols, rect, 2, 2, name = "gRect2")
-gtCols = gtable_add_grob(gtCols, polygon, 3, 2, name = polygon$name)
-grid.draw(gtCols)
-
-grid.ls()
-grid.edit("gText", grep=TRUE, gp=gpar(col="red"))
-
-grid.edit("gRect", grep=TRUE, gp=gpar(fill="red"))
-grid.edit("gRect2", grep=TRUE, gp=gpar(fill="blue"))
-
-
-
-
-
-
-
-
-gtCols$grobs[[1]][[4]][[2]][[4]][[2]]$gp = gpar(col = "red")
-grid.newpage()
-grid.draw(gtCols)
-
-
-
-gg = getGrob(name, "gText", grep = TRUE, global = TRUE)
-gt = editGrob(gg, gp=gpar(col="red"))
-
-
-
-
-
-y = gtable_filter(gtCols, pattern = "Rect", fixed = TRUE)
-y = editGrob(y, gp = gpar(fill = "red"))
-gtCols = gtable_add_grob(gtCols, z, 1, 3)
-
-gtCols$grobs[[(which(gtCols$layout$name == "gRect"))]] = nullGrob()
-gtCols = gtable_add_grob(gtCols, z, 2, 2)
-grid.draw(gtCols)
-
-
-
-
-
-
-
-
-
-gg[[ii]] <- editGrob(getGrob(gg[[ii]], "strip.text", 
-                               grep=TRUE, global=TRUE), 
-                       label=bquote(gamma[.(ii)]))
-gg <- gtCols$grobs
-x = getGrob(gtCols$grobs, "gTree", grep=TRUE, global=TRUE)
-, 
-                       label=bquote(gamma[.(ii)]))
-
-z <- grid.get(gPath("gRect"), grep=TRUE)
-z = editGrob(z, gp = gpar(fill = "red"))
-gtCols = gtable_add_grob(gtCols, z, 2, 2, name = rect$name)
-grid.draw(gtCols)
-
+#### Finished Section 3
 
 
 
